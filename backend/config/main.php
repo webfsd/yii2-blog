@@ -15,7 +15,10 @@ return [
         'admin' => [
             'class' => 'mdm\admin\Module',
             // 'layout' => 'left-menu', // yii2-admin的导航菜单
-        ]
+        ],
+        'contents' => [
+            'class' => 'backend\modules\contents\Content',
+        ],
     ],
     'components' => [
         'request' => [
@@ -58,7 +61,7 @@ return [
         'assetManager' => [
             'bundles' => [
                 'dmstr\web\AdminLteAsset' => [
-                    'skin' => 'skin-black',
+                    'skin' => 'skin-green',
                 ],
             ],
         ],
