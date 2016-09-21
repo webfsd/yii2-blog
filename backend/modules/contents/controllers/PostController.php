@@ -2,17 +2,19 @@
 
 namespace backend\modules\contents\controllers;
 
+use backend\modules\contents\models\Tag;
 use Yii;
-use backend\modules\contents\models\Article;
-use backend\modules\contents\models\searchs\Article as ArticleSearch;
+use backend\modules\contents\models\Post;
+use backend\modules\contents\models\search\Post as PostSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
- * ArticleController implements the CRUD actions for Article model.
+ * PostController implements the CRUD actions for Post model.
  */
-class ArticleController extends Controller
+class PostController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +32,12 @@ class ArticleController extends Controller
     }
 
     /**
-     * Lists all Article models.
+     * Lists all Post models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ArticleSearch();
+        $searchModel = new PostSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +47,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Displays a single Article model.
+     * Displays a single Post model.
      * @param integer $id
      * @return mixed
      */
@@ -57,15 +59,16 @@ class ArticleController extends Controller
     }
 
     /**
-     * Creates a new Article model.
+     * Creates a new Post model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Article();
+        $model = new Post();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -75,7 +78,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Updates an existing Article model.
+     * Updates an existing Post model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -94,7 +97,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Deletes an existing Article model.
+     * Deletes an existing Post model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -107,15 +110,33 @@ class ArticleController extends Controller
     }
 
     /**
-     * Finds the Article model based on its primary key value.
+     * @param $query
+     * @return array
+     */
+    public function actionList($query)
+    {
+        $models = Tag::findAllByName($query);
+        $items = [];
+
+        foreach ($models as $model) {
+            $items[] = ['name' => $model->name];
+        }
+        // We know we can use ContentNegotiator filter
+        // this way is easier to show you here :)
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        return $items;
+    }
+    /**
+     * Finds the Post model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Article the loaded model
+     * @return Post the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Article::findOne($id)) !== null) {
+        if (($model = Post::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

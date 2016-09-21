@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model backend\modules\contents\models\searchs\Article */
+/* @var $model backend\modules\contents\models\search\Post */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="article-search">
+<div class="post-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -28,6 +28,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'sort') ?>
 
     <?php // echo $form->field($model, 'refer_url') ?>
+
+    <?php // echo $form->field($model, 'content') ?>
 
     <?php // echo $form->field($model, 'created_at') ?>
 

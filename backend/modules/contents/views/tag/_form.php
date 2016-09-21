@@ -1,7 +1,10 @@
 <?php
 
+use backend\modules\contents\models\Tag;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+
+
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\contents\models\Tag */
@@ -12,13 +15,11 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput() ?>
-
     <?= $form->field($model, 'tag_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'tag_type')->textInput() ?>
-
-    <?= $form->field($model, 'data_id')->textInput() ?>
+    <?= $form->field($model, 'tag_type')->dropDownList([
+        Tag::TAG_ARTICLE => '文章类型',
+    ]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

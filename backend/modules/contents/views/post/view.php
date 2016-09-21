@@ -5,13 +5,13 @@ use yii\widgets\DetailView;
 use mdm\admin\components\Helper;
 
 /* @var $this yii\web\View */
-/* @var $model backend\modules\contents\models\Article */
+/* @var $model backend\modules\contents\models\Post */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Articles', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Posts', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="article-view">
+<div class="post-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -39,6 +39,7 @@ Html::a('Delete', ['delete', 'id' => $model->id], [
             'comment_count',
             'sort',
             'refer_url:url',
+            'content:ntext',
             'created_at',
             'updated_at',
         ],

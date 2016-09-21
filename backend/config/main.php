@@ -52,7 +52,7 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'suffix' => '.html',
+            // 'suffix' => '.html',
             'rules' => [
                 "<controller:\w+>/<id:\d+>" => "<controller>/view",
                 "<controller:\w+>/<action:\w+>" => "<controller>/<action>"

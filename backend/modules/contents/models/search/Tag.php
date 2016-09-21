@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\modules\contents\models\searchs;
+namespace backend\modules\contents\models\search;
 
 use Yii;
 use yii\base\Model;
@@ -18,7 +18,7 @@ class Tag extends TagModel
     public function rules()
     {
         return [
-            [['id', 'tag_type', 'data_id'], 'integer'],
+            [['id', 'tag_type', 'frequency'], 'integer'],
             [['tag_name'], 'safe'],
         ];
     }
@@ -61,11 +61,17 @@ class Tag extends TagModel
         $query->andFilterWhere([
             'id' => $this->id,
             'tag_type' => $this->tag_type,
-            'data_id' => $this->data_id,
+            'frequency' => $this->frequency,
         ]);
 
         $query->andFilterWhere(['like', 'tag_name', $this->tag_name]);
 
         return $dataProvider;
+    }
+
+    public static function findAllByTagName($query)
+    {
+        return self::find()->where(['like','tag_name',$query])->all();
+
     }
 }

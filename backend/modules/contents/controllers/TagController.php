@@ -4,10 +4,11 @@ namespace backend\modules\contents\controllers;
 
 use Yii;
 use backend\modules\contents\models\Tag;
-use backend\modules\contents\models\searchs\Tag as TagSearch;
+use backend\modules\contents\models\search\Tag as TagSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * TagController implements the CRUD actions for Tag model.
@@ -104,6 +105,25 @@ class TagController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+    /**
+     * @param $query
+     * @return array
+     */
+    public function actionList($query)
+    {
+
+        $models = TagSearch::findAllByTagName($query);
+        $items = [];
+
+        foreach ($models as $model) {
+            $items[] = ['name' => $model->tag_name];
+        }
+        // We know we can use ContentNegotiator filter
+        // this way is easier to show you here :)
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        return $items;
     }
 
     /**

@@ -4,24 +4,24 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use mdm\admin\components\Helper;
 
-use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
-/* @var $searchModel backend\modules\contents\models\searchs\Article */
+/* @var $searchModel backend\modules\contents\models\search\Post */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Articles';
+$this->title = 'Posts';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="article-index">
+<div class="post-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
                 <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     
     <p>
         <?php if (Helper::checkRoute('create')) { 
-        echo Html::a('Create Article', ['create'], ['class' => 'btn btn-success']); }?>
+        echo Html::a('Create Post', ['create'], ['class' => 'btn btn-success']); }?>
     </p>
-    <?php Pjax::begin(); ?>            <?= GridView::widget([
+                <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'comment_count',
             // 'sort',
             // 'refer_url:url',
+            // 'content:ntext',
             // 'created_at',
             // 'updated_at',
 
@@ -43,4 +44,4 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         ],
         ]); ?>
-        <?php Pjax::end(); ?></div>
+        </div>

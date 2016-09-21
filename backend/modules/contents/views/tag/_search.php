@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model backend\modules\contents\models\searchs\Tag */
+/* @var $model backend\modules\contents\models\search\Tag */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'tag_type') ?>
 
-    <?= $form->field($model, 'data_id') ?>
+    <?= $form->field($model, 'frequency') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

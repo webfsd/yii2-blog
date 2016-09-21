@@ -1,16 +1,16 @@
 <?php
 
-namespace backend\modules\contents\models\searchs;
+namespace backend\modules\contents\models\search;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\modules\contents\models\Article as ArticleModel;
+use backend\modules\contents\models\Post as PostModel;
 
 /**
- * Article represents the model behind the search form about `backend\modules\contents\models\Article`.
+ * Post represents the model behind the search form about `backend\modules\contents\models\Post`.
  */
-class Article extends ArticleModel
+class Post extends PostModel
 {
     /**
      * @inheritdoc
@@ -19,7 +19,7 @@ class Article extends ArticleModel
     {
         return [
             [['id', 'author_id', 'views', 'comment_count', 'sort'], 'integer'],
-            [['title', 'refer_url', 'created_at', 'updated_at'], 'safe'],
+            [['title', 'content', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class Article extends ArticleModel
      */
     public function search($params)
     {
-        $query = ArticleModel::find();
+        $query = PostModel::find();
 
         // add conditions that should always apply here
 
@@ -69,7 +69,7 @@ class Article extends ArticleModel
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'refer_url', $this->refer_url]);
+            ->andFilterWhere(['like', 'content', $this->content]);
 
         return $dataProvider;
     }
