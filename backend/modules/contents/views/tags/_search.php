@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model backend\modules\contents\models\search\Tag */
+/* @var $model backend\modules\contents\models\TagsSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="tag-search">
+<div class="tags-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],

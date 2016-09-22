@@ -1,16 +1,17 @@
 <?php
 
-namespace backend\modules\contents\models\search;
+namespace backend\modules\contents\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\modules\contents\models\Post as PostModel;
+use common\models\Posts;
+use creocoder\taggable\TaggableQueryBehavior;
 
 /**
- * Post represents the model behind the search form about `backend\modules\contents\models\Post`.
+ * PostsSearch represents the model behind the search form about `common\models\Posts`.
  */
-class Post extends PostModel
+class PostsSearch extends Posts
 {
     /**
      * @inheritdoc
@@ -18,8 +19,8 @@ class Post extends PostModel
     public function rules()
     {
         return [
-            [['id', 'author_id', 'views', 'comment_count', 'sort'], 'integer'],
-            [['title', 'content', 'created_at', 'updated_at'], 'safe'],
+            [['id', 'views', 'comment_count', 'sort', 'enabled_comment', 'status'], 'integer'],
+            [['slug', 'author_id','tagNames', 'title', 'description', 'content', 'password', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -41,7 +42,7 @@ class Post extends PostModel
      */
     public function search($params)
     {
-        $query = PostModel::find();
+        $query = Posts::find();
 
         // add conditions that should always apply here
 
@@ -57,19 +58,29 @@ class Post extends PostModel
             return $dataProvider;
         }
 
+        $query->joinWith('author'); // 关联查询
+        $query->joinWith('tags'); // 关联查询
+
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'author_id' => $this->author_id,
+            'posts.id' => $this->id,
+            // 'author_id' => $this->author_id,
             'views' => $this->views,
             'comment_count' => $this->comment_count,
             'sort' => $this->sort,
+            'enabled_comment' => $this->enabled_comment,
+            'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'content', $this->content]);
+        $query->andFilterWhere(['like', 'slug', $this->slug])
+            ->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'content', $this->content])
+            ->andFilterWhere(['like', 'password', $this->password])
+             ->andFilterWhere(['like', 'tags.name', $this->tagNames])
+            ->andFilterWhere(['like', 'user.username', $this->author_id]);
 
         return $dataProvider;
     }

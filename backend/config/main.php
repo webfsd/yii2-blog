@@ -19,6 +19,9 @@ return [
         'contents' => [
             'class' => 'backend\modules\contents\Content',
         ],
+        'gridview' => [
+            'class' => '\kartik\grid\Module'
+        ],
     ],
     'components' => [
         'request' => [

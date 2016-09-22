@@ -8,7 +8,7 @@ use yii\db\Schema;
  */
 class m160921_062412_create_posts_tags_table extends Migration
 {
-    const TABLE_NAME = '{{%posts_tags}}';
+    const TABLE_NAME = '{{%post_tag}}';
     /**
      * @inheritdoc
      */

@@ -264,15 +264,6 @@ return array (
       '@kartik/widgets' => $vendorDir . '/kartik-v/yii2-widgets',
     ),
   ),
-  '2amigos/yii2-taggable-behavior' => 
-  array (
-    'name' => '2amigos/yii2-taggable-behavior',
-    'version' => '1.0.1.0',
-    'alias' => 
-    array (
-      '@dosamigos/taggable' => $vendorDir . '/2amigos/yii2-taggable-behavior/src',
-    ),
-  ),
   '2amigos/yii2-selectize-widget' => 
   array (
     'name' => '2amigos/yii2-selectize-widget',
@@ -289,6 +280,42 @@ return array (
     'alias' => 
     array (
       '@yii/swiftmailer' => $vendorDir . '/yiisoft/yii2-swiftmailer',
+    ),
+  ),
+  'creocoder/yii2-taggable' => 
+  array (
+    'name' => 'creocoder/yii2-taggable',
+    'version' => '2.0.0.0',
+    'alias' => 
+    array (
+      '@creocoder/taggable' => $vendorDir . '/creocoder/yii2-taggable/src',
+    ),
+  ),
+  'kartik-v/yii2-dialog' => 
+  array (
+    'name' => 'kartik-v/yii2-dialog',
+    'version' => '1.0.1.0',
+    'alias' => 
+    array (
+      '@kartik/dialog' => $vendorDir . '/kartik-v/yii2-dialog',
+    ),
+  ),
+  'kartik-v/yii2-grid' => 
+  array (
+    'name' => 'kartik-v/yii2-grid',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@kartik/grid' => $vendorDir . '/kartik-v/yii2-grid',
+    ),
+  ),
+  'kartik-v/yii2-mpdf' => 
+  array (
+    'name' => 'kartik-v/yii2-mpdf',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@kartik/mpdf' => $vendorDir . '/kartik-v/yii2-mpdf',
     ),
   ),
 );

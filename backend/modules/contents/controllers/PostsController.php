@@ -3,17 +3,17 @@
 namespace backend\modules\contents\controllers;
 
 use Yii;
-use backend\modules\contents\models\Tag;
-use backend\modules\contents\models\search\Tag as TagSearch;
+use common\models\Posts;
+use backend\modules\contents\models\PostsSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\Response;
 
 /**
- * TagController implements the CRUD actions for Tag model.
+ * PostsController implements the CRUD actions for Posts model.
  */
-class TagController extends Controller
+class PostsController extends Controller
 {
     /**
      * @inheritdoc
@@ -31,12 +31,12 @@ class TagController extends Controller
     }
 
     /**
-     * Lists all Tag models.
+     * Lists all Posts models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new TagSearch();
+        $searchModel = new PostsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -46,7 +46,7 @@ class TagController extends Controller
     }
 
     /**
-     * Displays a single Tag model.
+     * Displays a single Posts model.
      * @param integer $id
      * @return mixed
      */
@@ -58,15 +58,20 @@ class TagController extends Controller
     }
 
     /**
-     * Creates a new Tag model.
+     * Creates a new Posts model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Tag();
+        $model = new Posts();
+        if ($model->load(Yii::$app->request->post())) {
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $posts = Yii::$app->request->post();
+            $model->addTagValues($posts['Posts']['tagNames']);
+            $model->author_id = Yii::$app->user->id; // 当前用户id
+            $model->save();
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -76,7 +81,7 @@ class TagController extends Controller
     }
 
     /**
-     * Updates an existing Tag model.
+     * Updates an existing Posts model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -85,9 +90,15 @@ class TagController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $posts = Yii::$app->request->post();
+            $model->tagValues = $posts['Posts']['tagNames']; // 赋值标签
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            $tags = $model->tags;
+            $model['tagNames'] = join(',',ArrayHelper::map(ArrayHelper::toArray($tags),'id','name'));
+
             return $this->render('update', [
                 'model' => $model,
             ]);
@@ -95,7 +106,7 @@ class TagController extends Controller
     }
 
     /**
-     * Deletes an existing Tag model.
+     * Deletes an existing Posts model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -106,36 +117,17 @@ class TagController extends Controller
 
         return $this->redirect(['index']);
     }
-    /**
-     * @param $query
-     * @return array
-     */
-    public function actionList($query)
-    {
-
-        $models = TagSearch::findAllByTagName($query);
-        $items = [];
-
-        foreach ($models as $model) {
-            $items[] = ['name' => $model->tag_name];
-        }
-        // We know we can use ContentNegotiator filter
-        // this way is easier to show you here :)
-        Yii::$app->response->format = Response::FORMAT_JSON;
-
-        return $items;
-    }
 
     /**
-     * Finds the Tag model based on its primary key value.
+     * Finds the Posts model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Tag the loaded model
+     * @return Posts the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Tag::findOne($id)) !== null) {
+        if (($model = Posts::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

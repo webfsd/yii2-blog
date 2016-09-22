@@ -21,8 +21,10 @@
         "mdmsoft/yii2-admin": "~2.0",
         "dmstr/yii2-adminlte-asset": "2.*",
         "kartik-v/yii2-widgets": "*",
-        "2amigos/yii2-taggable-behavior": "~1.0",
-        "2amigos/yii2-selectize-widget": "~1.0"
+        "2amigos/yii2-selectize-widget": "~1.0",
+        "creocoder/yii2-taggable": "^2.0",
+        "kartik-v/yii2-grid": "@dev",
+        "kartik-v/yii2-mpdf": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

@@ -1,16 +1,16 @@
 <?php
 
-namespace backend\modules\contents\models\search;
+namespace backend\modules\contents\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\modules\contents\models\Tag as TagModel;
+use common\models\Tags;
 
 /**
- * Tag represents the model behind the search form about `backend\modules\contents\models\Tag`.
+ * TagsSearch represents the model behind the search form about `common\models\Tags`.
  */
-class Tag extends TagModel
+class TagsSearch extends Tags
 {
     /**
      * @inheritdoc
@@ -41,7 +41,7 @@ class Tag extends TagModel
      */
     public function search($params)
     {
-        $query = TagModel::find();
+        $query = Tags::find();
 
         // add conditions that should always apply here
 
@@ -67,11 +67,5 @@ class Tag extends TagModel
         $query->andFilterWhere(['like', 'tag_name', $this->tag_name]);
 
         return $dataProvider;
-    }
-
-    public static function findAllByTagName($query)
-    {
-        return self::find()->where(['like','tag_name',$query])->all();
-
     }
 }

@@ -1,15 +1,17 @@
 <?php
 
 use backend\modules\contents\models\Post;
+use backend\widgets\ActiveForm;
+use backend\widgets\meta\MetaForm;
+use common\models\Posts;
 use dosamigos\selectize\SelectizeTextInput;
 use kartik\widgets\DateTimePicker;
 use yii\bootstrap\Tabs;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model backend\modules\contents\models\Post */
+/* @var $model common\models\Posts */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -32,15 +34,28 @@ use yii\widgets\ActiveForm;
             <?= Tabs::widget([
                 'renderTabContent' => false,
                 'items' => [
-                    ['label' => '选项', 'options' => ['id' => 'options']],
-                    ['label' => '附件', 'options' => ['id' => 'files']],
+                    ['label' => '常用选项', 'options' => ['id' => 'options']],
+                    ['label' => '其他选项', 'options' => ['id' => 'files']],
                 ],
             ]) ?>
 
             <div class="tab-content">
                 <div id="options" class="tab-pane active">
 
-                    <?= $form->field($model, 'slug')->textInput(['maxlength' => true])->hint('输入一个唯一标识') ?>
+                    <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
+
+
+                    <?= $form->field($model, 'tagNames')->widget(SelectizeTextInput::className(), [
+                        'loadUrl' => ['tags/list'],
+                        'options' => ['class' => 'form-control'],
+                        'clientOptions' => [
+                            'plugins' => ['remove_button'],
+                            'valueField' => 'name',
+                            'labelField' => 'name',
+                            'searchField' => ['name'],
+                            'create' => true,
+                        ],
+                    ]); ?>
 
                     <div class="form-group">
                         <label class="control-label"><?= $model->attributeLabels()['created_at'] ?></label>
@@ -56,25 +71,22 @@ use yii\widgets\ActiveForm;
                     </div>
 
                     <?= $form->field($model, 'status')->dropDownList([
-                        Post::STATUS_PUBLISH => '公开',
-                        Post::STATUS_HIDDEN => '隐藏',
-                    ])->hint('请选择状态'); ?>
+                        Posts::STATUS_PUBLISH => '公开',
+                        Posts::STATUS_HIDDEN => '隐藏',
+                    ]); ?>
 
-                    <?= $form->field($model, 'tagNames')->widget(SelectizeTextInput::className(), [
-                        'loadUrl' => ['tag/list'],
-                        'options' => ['class' => 'form-control'],
-                        'clientOptions' => [
-                            'plugins' => ['remove_button'],
-                            'valueField' => 'name',
-                            'labelField' => 'name',
-                            'searchField' => ['name'],
-                            'create' => true,
-                        ],
-                    ])->hint('Use commas to separate tags'); ?>
 
                 </div>
                 <div id="files" class="tab-pane">
 
+                    <?= $form->field($model, 'enabled_comment')->dropDownList([
+                        Posts::STATUS_PUBLISH => '开启',
+                        Posts::STATUS_HIDDEN => '隐藏',
+                    ]); ?>
+
+                    <?= $form->field($model,'views')->textInput(['maxlength' => true]); ?>
+
+                    <?= $form->field($model, 'password')->passwordInput(); ?>
                 </div>
             </div>
 
