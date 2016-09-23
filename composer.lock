@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9720f3f05e353baf69b081c57c916d4e",
-    "content-hash": "a2a86811732cbce78104545a16aa74f6",
+    "hash": "fbea59d65ac6e46228604b5bb8a6bbe5",
+    "content-hash": "2fa84be09b0f6e7eb2d9ee0f10fca62d",
     "packages": [
         {
             "name": "2amigos/yii2-selectize-widget",
@@ -641,6 +641,46 @@
             "time": "2015-02-24 21:45:58"
         },
         {
+            "name": "curder/yii2-bootstrap-markdown",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/curder/yii2-bootstrap-markdown.git",
+                "reference": "58beea803c3899aa49ada8acef41a9f83e49a1ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/curder/yii2-bootstrap-markdown/58beea803c3899aa49ada8acef41a9f83e49a1ff.zip",
+                "reference": "58beea803c3899aa49ada8acef41a9f83e49a1ff",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "curder\\markdown\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "curder",
+                    "email": "curder@foxmail.com"
+                }
+            ],
+            "description": "markdown Editor for Yii2",
+            "keywords": [
+                "extension",
+                "yii2"
+            ],
+            "time": "2016-09-23 04:35:28"
+        },
+        {
             "name": "dmstr/yii2-adminlte-asset",
             "version": "2.3.3",
             "source": {
@@ -1035,6 +1075,58 @@
                 "yii2"
             ],
             "time": "2016-09-04 09:25:29"
+        },
+        {
+            "name": "kartik-v/yii2-markdown",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-markdown.git",
+                "reference": "f4ecb0078805f453104e5f46749ab31bc05463d8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/kartik-v/yii2-markdown/f4ecb0078805f453104e5f46749ab31bc05463d8.zip",
+                "reference": "f4ecb0078805f453104e5f46749ab31bc05463d8",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/yii2-krajee-base": "*",
+                "michelf/php-markdown": "*",
+                "michelf/php-smartypants": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "kartik\\markdown\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD 3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "Advanced Markdown editing and conversion utilities for Yii Framework 2.0",
+            "homepage": "https://github.com/kartik-v/yii2-markdown",
+            "keywords": [
+                "bootstrap",
+                "converter",
+                "editor",
+                "extension",
+                "form",
+                "input",
+                "jquery",
+                "markdown",
+                "yii",
+                "yii2"
+            ],
+            "time": "2016-06-06 16:29:06"
         },
         {
             "name": "kartik-v/yii2-mpdf",
@@ -2122,6 +2214,112 @@
             "time": "2016-05-20 23:38:13"
         },
         {
+            "name": "michelf/php-markdown",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/michelf/php-markdown.git",
+                "reference": "156e56ee036505ec637d761ee62dc425d807183c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/michelf/php-markdown/156e56ee036505ec637d761ee62dc425d807183c.zip",
+                "reference": "156e56ee036505ec637d761ee62dc425d807183c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-lib": "1.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Michelf": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Michel Fortin",
+                    "email": "michel.fortin@michelf.ca",
+                    "homepage": "https://michelf.ca/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "John Gruber",
+                    "homepage": "https://daringfireball.net/"
+                }
+            ],
+            "description": "PHP Markdown",
+            "homepage": "https://michelf.ca/projects/php-markdown/",
+            "keywords": [
+                "markdown"
+            ],
+            "time": "2015-12-24 01:37:31"
+        },
+        {
+            "name": "michelf/php-smartypants",
+            "version": "dev-lib",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/michelf/php-smartypants.git",
+                "reference": "e4a873d4a4e0f3dd6fbf5b9e017362f174eb28df"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/michelf/php-smartypants/e4a873d4a4e0f3dd6fbf5b9e017362f174eb28df.zip",
+                "reference": "e4a873d4a4e0f3dd6fbf5b9e017362f174eb28df",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-lib": "1.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Michelf": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Michel Fortin",
+                    "email": "michel.fortin@michelf.ca",
+                    "homepage": "http://michelf.ca/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "John Gruber",
+                    "homepage": "http://daringfireball.net/"
+                }
+            ],
+            "description": "PHP SmartyPants",
+            "homepage": "http://michelf.ca/projects/php-smartypants/",
+            "keywords": [
+                "dashes",
+                "quotes",
+                "spaces",
+                "typographer",
+                "typography"
+            ],
+            "time": "2013-08-02 10:48:47"
+        },
+        {
             "name": "mpdf/mpdf",
             "version": "v6.1.2",
             "source": {
@@ -2877,8 +3075,11 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "kartik-v/yii2-mpdf": 20,
         "kartik-v/yii2-grid": 20,
-        "kartik-v/yii2-mpdf": 20
+        "michelf/php-smartypants": 20,
+        "kartik-v/yii2-markdown": 20,
+        "curder/yii2-bootstrap-markdown": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

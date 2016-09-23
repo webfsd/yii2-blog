@@ -11,18 +11,7 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [
-        'admin' => [
-            'class' => 'mdm\admin\Module',
-            // 'layout' => 'left-menu', // yii2-admin的导航菜单
-        ],
-        'contents' => [
-            'class' => 'backend\modules\contents\Content',
-        ],
-        'gridview' => [
-            'class' => '\kartik\grid\Module'
-        ],
-    ],
+    'modules' => require (__DIR__ . '/modules.php'),
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',

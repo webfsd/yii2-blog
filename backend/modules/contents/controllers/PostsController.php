@@ -2,10 +2,13 @@
 
 namespace backend\modules\contents\controllers;
 
+use kartik\markdown\Markdown;
 use Yii;
 use common\models\Posts;
 use backend\modules\contents\models\PostsSearch;
 use yii\helpers\ArrayHelper;
+use yii\helpers\HtmlPurifier;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -65,13 +68,12 @@ class PostsController extends Controller
     public function actionCreate()
     {
         $model = new Posts();
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             $posts = Yii::$app->request->post();
             $model->addTagValues($posts['Posts']['tagNames']);
             $model->author_id = Yii::$app->user->id; // 当前用户id
             $model->save();
-
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [

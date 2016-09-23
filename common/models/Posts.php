@@ -46,14 +46,15 @@ class Posts extends \yii\db\ActiveRecord
     {
         return [
             [['author_id', 'views', 'comment_count', 'sort', 'enabled_comment', 'status'], 'integer'],
-            [['enabled_comment', 'status'], 'required'],
+            [['enabled_comment', 'status', 'slug'], 'required'],
             [['content'], 'string'],
             [['created_at', 'updated_at', 'tagValues', 'views'], 'safe'],
             [['slug'], 'string', 'max' => 20],
             [['title'], 'string', 'max' => 60],
+            [['title'], 'required'],
             [['description'], 'string', 'max' => 160],
             [['password'], 'string', 'max' => 32],
-            [['slug'], 'unique'],
+            ['slug', 'unique', 'targetClass' => Posts::className(), 'message' => '该标识已经被使用'],
         ];
     }
 
@@ -91,8 +92,8 @@ class Posts extends \yii\db\ActiveRecord
             'tagNames' => '请输入标签名,按Tab键确认',
             'status' => '请选择文章状态',
             'enabled_comment' => '是否开启评论',
-            'views'=>'文章浏览数',
-            'password'=>'如果文章需要加密,请输入文章密码'
+            'views' => '文章浏览数',
+            'password' => '如果文章需要加密,请输入文章密码'
         ];
     }
 

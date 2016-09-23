@@ -2,8 +2,8 @@
 
 use backend\modules\contents\models\Post;
 use backend\widgets\ActiveForm;
-use backend\widgets\meta\MetaForm;
 use common\models\Posts;
+use curder\markdown\MarkdownEditor;
 use dosamigos\selectize\SelectizeTextInput;
 use kartik\widgets\DateTimePicker;
 use yii\bootstrap\Tabs;
@@ -19,11 +19,19 @@ use yii\helpers\Url;
     <div class="row">
         <?php $form = ActiveForm::begin(); ?>
         <div class="col-md-9">
+
             <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
             <?= $form->field($model, 'description')->textarea(['rows' => 3]) ?>
 
-            <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
+            <?= MarkdownEditor::widget([
+                'model' => $model,
+                'attribute' => 'content',
+                'smarty' => false,
+                'previewAction' => Url::to(['/curder/parse/preview']),
+                'uploadPrompt' => '',
+                'value'=>'value',
+            ]); ?>
 
             <div class="form-group">
                 <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
