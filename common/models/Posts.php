@@ -30,7 +30,7 @@ class Posts extends \yii\db\ActiveRecord
     const STATUS_HIDDEN = 1; // 隐藏
 
     public $tagNames;
-
+    public $image; // 编辑器上传图片
     /**
      * @inheritdoc
      */
@@ -48,7 +48,7 @@ class Posts extends \yii\db\ActiveRecord
             [['author_id', 'views', 'comment_count', 'sort', 'enabled_comment', 'status'], 'integer'],
             [['enabled_comment', 'status', 'slug'], 'required'],
             [['content'], 'string'],
-            [['created_at', 'updated_at', 'tagValues', 'views'], 'safe'],
+            [['created_at', 'updated_at', 'tagValues', 'views','imageFile'], 'safe'],
             [['slug'], 'string', 'max' => 20],
             [['title'], 'string', 'max' => 60],
             [['title'], 'required'],

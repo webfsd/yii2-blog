@@ -27,7 +27,9 @@
         "kartik-v/yii2-grid": "@dev",
         "michelf/php-smartypants": "1.6.x-dev",
         "kartik-v/yii2-markdown": "dev-master",
-        "curder/yii2-bootstrap-markdown": "dev-master"
+        "curder/yii2-bootstrap-markdown": "dev-master",
+        "yidashi/yii2-bootstrap-markdown": "*",
+        "yidashi/yii2-webuploader": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

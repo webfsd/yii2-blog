@@ -3,12 +3,11 @@
 use backend\modules\contents\models\Post;
 use backend\widgets\ActiveForm;
 use common\models\Posts;
-use curder\markdown\MarkdownEditor;
+use curder\markdown\Markdown;
 use dosamigos\selectize\SelectizeTextInput;
 use kartik\widgets\DateTimePicker;
 use yii\bootstrap\Tabs;
 use yii\helpers\Html;
-use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Posts */
@@ -17,21 +16,14 @@ use yii\helpers\Url;
 
 <div class="post-form">
     <div class="row">
-        <?php $form = ActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
         <div class="col-md-9">
 
             <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
             <?= $form->field($model, 'description')->textarea(['rows' => 3]) ?>
 
-            <?= MarkdownEditor::widget([
-                'model' => $model,
-                'attribute' => 'content',
-                'smarty' => false,
-                'previewAction' => Url::to(['/curder/parse/preview']),
-                'uploadPrompt' => '',
-                'value'=>'value',
-            ]); ?>
+            <?php echo $form->field($model,'content')->widget(Markdown::className(),['language' => 'zh']); ?>
 
             <div class="form-group">
                 <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -92,7 +84,7 @@ use yii\helpers\Url;
                         Posts::STATUS_HIDDEN => '隐藏',
                     ]); ?>
 
-                    <?= $form->field($model,'views')->textInput(['maxlength' => true]); ?>
+                    <?= $form->field($model, 'views')->textInput(['maxlength' => true]); ?>
 
                     <?= $form->field($model, 'password')->passwordInput(); ?>
                 </div>
