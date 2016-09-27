@@ -2,7 +2,7 @@
 namespace backend\controllers;
 
 use common\models\Posts;
-use curder\markdown\actions\UploadImageAction;
+use curder\markdown\UploadImage;
 use Yii;
 use yii\helpers\FileHelper;
 use yii\helpers\Json;
@@ -31,7 +31,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index','upload-image'],
+                        'actions' => ['logout', 'index', 'upload-image', 'upload-file', 'delete-image', 'delete-file'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -52,8 +52,7 @@ class SiteController extends Controller
     public function actions()
     {
         return [
-            'upload-image'=>UploadImageAction::className(),
-//            'upload-file'
+            'upload-image' => UploadImage::className() ,
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
@@ -107,11 +106,11 @@ class SiteController extends Controller
     {
         $model = new Posts;
         $imageDomain = Yii::$app->params['image.domain'];
-        $imageFile = UploadedFile::getInstance($model,"imageFile");
+        $imageFile = UploadedFile::getInstance($model, "imageFile");
         // var_dump($imageFile);exit;
         $directory = \Yii::getAlias('@upload') . DIRECTORY_SEPARATOR . Yii::$app->session->id . DIRECTORY_SEPARATOR;
         if (!is_dir($directory)) {
-            mkdir($directory,0777,true);
+            mkdir($directory, 0777, true);
         }
         if ($imageFile) {
             $uid = uniqid(time(), true);
@@ -142,7 +141,7 @@ class SiteController extends Controller
         }
         $files = FileHelper::findFiles($directory);
         $output = [];
-        foreach ($files as $file){
+        foreach ($files as $file) {
             $imageDomain = Yii::$app->params['image.domain'];
             $path = $imageDomain . '/uploads/images/temp/' . Yii::$app->session->id . DIRECTORY_SEPARATOR . basename($file);
             $output['files'][] = [
@@ -156,5 +155,5 @@ class SiteController extends Controller
         }
         return Json::encode($output);
     }
-    
+
 }

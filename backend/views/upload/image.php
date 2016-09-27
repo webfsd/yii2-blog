@@ -40,10 +40,10 @@ use backend\widgets\ActiveForm;
                     'url' => ['/upload/image'],
                     'gallery' => false,
                     'fieldOptions' => [
-                        'accept' => 'image/*'
+                        'accept' => Yii::$app->params['image.accept']
                     ],
                     'clientOptions' => [
-                        'maxFileSize' => 2000000
+                        'maxFileSize' => Yii::$app->params['image.maxSize']
                     ],
                     // ...
                     'clientEvents' => [

@@ -3,29 +3,18 @@ namespace backend\controllers;
 
 use curder\markdown\models\Upload;
 use Yii;
-use yii\helpers\FileHelper;
 use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\UploadedFile;
 
 class UploadController extends Controller
 {
-    /**
-     * @var
-     */
-    public $driver;
-    /**
-     * @var array
-     */
-    public $config = [];
+    public $domain;
 
-    /**
-     * init action.
-     */
     public function init()
     {
-        $this->driver = Yii::$app->request->get('driver', 'qiniu');
         parent::init();
+        $this->domain = Yii::$app->params['image.domain'];
     }
 
     /**
@@ -37,7 +26,6 @@ class UploadController extends Controller
         if (Yii::$app->request->isPost) { // 文件上传
             $model = new Upload;
             $model->scenario = Upload::SCENARIO_UPLOAD_IMAGE;
-            $model->driver = $this->driver;
             $model->image = UploadedFile::getInstanceByName('image');
             if($model->validate()){
                 if($model->upload('image')){
@@ -45,8 +33,8 @@ class UploadController extends Controller
                         'files' => [[
                             'name' => $model->name,
                             'size' => $model->size,
-                            "url" => $model->url,
-                            "thumbnailUrl" => $model->url,
+                            "url" => $this->domain . $model->url,
+                            "thumbnailUrl" => $this->domain . $model->url,
                             "deleteUrl" => '/upload/image-delete?imageName=' . $model->fileName,
                             "deleteType" => "POST"
                         ]]
@@ -76,13 +64,7 @@ class UploadController extends Controller
      */
     public function actionImageDelete($imageName)
     {
-        $model = new Upload();
-        $model->driver = $this->driver;
-        if($model->delete($imageName)){
-            $output =[];
-            return Json::encode($output);
-        }
-
+        $this->actionDelete($imageName,'image');
     }
 
     /**
@@ -93,7 +75,6 @@ class UploadController extends Controller
     {
         if (Yii::$app->request->isPost) { // 文件上传
             $model = new Upload;
-            $model->driver = $this->driver;
             $model->scenario = Upload::SCENARIO_UPLOAD_FILE;
             $model->file = UploadedFile::getInstanceByName('file');
 
@@ -103,8 +84,8 @@ class UploadController extends Controller
                         'files' => [[
                             'name' => $model->name,
                             'size' => $model->size,
-                            "url" => $model->url,
-                            "thumbnailUrl" => $model->url,
+                            "url" => $this->domain . $model->url,
+                            "thumbnailUrl" => $this->domain . $model->url,
                             "deleteUrl" => '/upload/file-delete?fileName=' . $model->fileName,
                             "deleteType" => "POST"
                         ]]
@@ -134,14 +115,18 @@ class UploadController extends Controller
      */
     public function actionFileDelete($fileName)
     {
+        $this->actionDelete($fileName,'file');
+    }
+
+    protected function actionDelete($fileName,$type = 'image')
+    {
         $model = new Upload();
-        $model->driver = $this->driver;
-        if($model->delete($fileName,'file')){
+        if($model->delete($fileName,$type)){
             $output =[];
             return Json::encode($output);
         }
-    }
 
+    }
 }
 
 

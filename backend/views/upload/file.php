@@ -39,10 +39,10 @@ use backend\widgets\ActiveForm;
                     'url' => ['/upload/file'],
                     'gallery' => false,
                     'fieldOptions' => [
-                        'accept' => '*.zip,*.rar,*.tar.gz'
+                        'accept' => Yii::$app->params['image.extension']
                     ],
                     'clientOptions' => [
-                        'maxFileSize' => 2000000
+                        'maxFileSize' => Yii::$app->params['files.maxSize']
                     ],
                     // ...
                     'clientEvents' => [

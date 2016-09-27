@@ -23,7 +23,16 @@ use yii\helpers\Html;
 
             <?= $form->field($model, 'description')->textarea(['rows' => 3]) ?>
 
-            <?php echo $form->field($model,'content')->widget(Markdown::className(),['language' => 'zh']); ?>
+            <?= $form->field($model, 'content')->widget(Markdown::className(), [
+                'language' => 'zh',
+                'useImageUpload' => true,
+                'uploadImageUrl' => '/upload/image',
+                'deleteImageUrl' => '/upload/delete-image',
+                'uploadFileUrl' => '/upload/file',
+                'deleteFileUrl' => '/upload/delete-file',
+                'domain'=>'http://www.blog.com/',
+                'rows'=>20
+            ]); ?>
 
             <div class="form-group">
                 <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
