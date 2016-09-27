@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\db\ActiveRecord;
+use creocoder\nestedsets\NestedSetsBehavior;
 
 /**
  * This is the model class for table "{{%categories}}".
@@ -25,6 +26,9 @@ class Category extends ActiveRecord
         return '{{%categories}}';
     }
 
+    /**
+     * @return array
+     */
     public function behaviors() {
         return [
             'tree' => [
@@ -37,16 +41,14 @@ class Category extends ActiveRecord
         ];
     }
 
+    /**
+     * @return array
+     */
     public function transactions()
     {
         return [
             self::SCENARIO_DEFAULT => self::OP_ALL,
         ];
-    }
-
-    public static function find()
-    {
-        return new CategoryQuery(get_called_class());
     }
 
     /**

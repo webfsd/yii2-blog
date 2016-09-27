@@ -10,6 +10,7 @@ namespace common\models;
 
 
 use yii\db\ActiveRecord;
+use creocoder\nestedsets\NestedSetsQueryBehavior;
 
 class CategoryQuery extends ActiveRecord
 {
