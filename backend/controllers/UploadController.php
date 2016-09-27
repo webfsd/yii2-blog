@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use curder\markdown\models\Upload;
 use Yii;
 use yii\helpers\FileHelper;
 use yii\helpers\Json;
@@ -9,11 +10,6 @@ use yii\web\UploadedFile;
 
 class UploadController extends Controller
 {
-    public static $uploadImageDir = 'uploads/images';
-    public static $uploadFileDir = 'uploads/files';
-    public static $uploadRoot = '@frontend/web/';
-    public static $frontDomain = 'http://www.blog.com';
-
     /**
      * @var
      */
@@ -28,8 +24,7 @@ class UploadController extends Controller
      */
     public function init()
     {
-        $this->driver = Yii::$app->request->get('driver', 'local');
-        Yii::$app->request->enableCsrfValidation = true;
+        $this->driver = Yii::$app->request->get('driver', 'qiniu');
         parent::init();
     }
 
@@ -40,31 +35,36 @@ class UploadController extends Controller
     public function actionImage()
     {
         if (Yii::$app->request->isPost) { // 文件上传
-            $imageFile = UploadedFile::getInstanceByName('image');
-            $directory = Yii::getAlias(self::$uploadRoot) . self::$uploadImageDir . DIRECTORY_SEPARATOR . Yii::$app->session->id . DIRECTORY_SEPARATOR;
-            if (!is_dir($directory)) {
-                mkdir($directory,0777,true);
-            }
-            if ($imageFile) {
-                $uid = uniqid(time(), true);
-                $fileName = $uid . '.' . $imageFile->extension;
-                $filePath = $directory . $fileName;
-                if ($imageFile->saveAs($filePath)) {
-                    $path = self::$frontDomain . '/' . self::$uploadImageDir . DIRECTORY_SEPARATOR . Yii::$app->session->id . DIRECTORY_SEPARATOR . $fileName;
+            $model = new Upload;
+            $model->scenario = Upload::SCENARIO_UPLOAD_IMAGE;
+            $model->driver = $this->driver;
+            $model->image = UploadedFile::getInstanceByName('image');
+            if($model->validate()){
+                if($model->upload('image')){
                     return Json::encode([
                         'files' => [[
-                            'name' => $imageFile->name,
-                            'size' => $imageFile->size,
-                            "url" => $path,
-                            "thumbnailUrl" => $path,
-                            "deleteUrl" => '/upload/image-delete?imageName=' . $fileName,
+                            'name' => $model->name,
+                            'size' => $model->size,
+                            "url" => $model->url,
+                            "thumbnailUrl" => $model->url,
+                            "deleteUrl" => '/upload/image-delete?imageName=' . $model->fileName,
                             "deleteType" => "POST"
                         ]]
                     ]);
                 }
+            }else{
+                $errors = [];
+                $modelErrors = $model->getErrors();
+                foreach ($modelErrors as $field => $fieldErrors) {
+                    foreach ($fieldErrors as $fieldError) {
+                        $errors[] = $fieldError;
+                    }
+                }
+                if (empty($errors)) {
+                    $errors = ['Unknown image upload validation error!'];
+                }
+                return Json::encode(['errors' => $errors]);
             }
-            return '';
-
         }
         return $this->renderAjax('image');
     }
@@ -76,24 +76,13 @@ class UploadController extends Controller
      */
     public function actionImageDelete($imageName)
     {
-        $directory = Yii::getAlias(self::$uploadRoot) . self::$uploadImageDir. DIRECTORY_SEPARATOR . Yii::$app->session->id;
-        if (is_file($directory . DIRECTORY_SEPARATOR . $imageName)) {
-            unlink($directory . DIRECTORY_SEPARATOR . $imageName);
+        $model = new Upload();
+        $model->driver = $this->driver;
+        if($model->delete($imageName)){
+            $output =[];
+            return Json::encode($output);
         }
-        $files = FileHelper::findFiles($directory);
-        $output = [];
-        foreach ($files as $file){
-            $path = self::$frontDomain . '/' . self::$uploadImageDir . Yii::$app->session->id . DIRECTORY_SEPARATOR . basename($file);
-            $output['files'][] = [
-                'name' => basename($file),
-                'size' => filesize($file),
-                "url" => $path,
-                "thumbnailUrl" => $path,
-                "deleteUrl" => 'image-delete?imageName=' . basename($file),
-                "deleteType" => "POST"
-            ];
-        }
-        return Json::encode($output);
+
     }
 
     /**
@@ -103,31 +92,37 @@ class UploadController extends Controller
     public function actionFile()
     {
         if (Yii::$app->request->isPost) { // 文件上传
-            $imageFile = UploadedFile::getInstanceByName('file');
-            $directory = Yii::getAlias(self::$uploadRoot) . self::$uploadFileDir . DIRECTORY_SEPARATOR . Yii::$app->session->id . DIRECTORY_SEPARATOR;
-            if (!is_dir($directory)) {
-                mkdir($directory,0777,true);
-            }
-            if ($imageFile) {
-                $uid = uniqid(time(), true);
-                $fileName = $uid . '.' . $imageFile->extension;
-                $filePath = $directory . $fileName;
-                if ($imageFile->saveAs($filePath)) {
-                    $path = self::$frontDomain . '/' . self::$uploadFileDir . DIRECTORY_SEPARATOR . Yii::$app->session->id . DIRECTORY_SEPARATOR . $fileName;
+            $model = new Upload;
+            $model->driver = $this->driver;
+            $model->scenario = Upload::SCENARIO_UPLOAD_FILE;
+            $model->file = UploadedFile::getInstanceByName('file');
+
+            if($model->validate()){
+                if($model->upload('file')){
                     return Json::encode([
                         'files' => [[
-                            'name' => $imageFile->name,
-                            'size' => $imageFile->size,
-                            "url" => $path,
-                            "thumbnailUrl" => $path,
-                            "deleteUrl" => '/upload/file-delete?fileName=' . $fileName,
+                            'name' => $model->name,
+                            'size' => $model->size,
+                            "url" => $model->url,
+                            "thumbnailUrl" => $model->url,
+                            "deleteUrl" => '/upload/file-delete?fileName=' . $model->fileName,
                             "deleteType" => "POST"
                         ]]
                     ]);
                 }
+            }else{
+                $errors = [];
+                $modelErrors = $model->getErrors();
+                foreach ($modelErrors as $field => $fieldErrors) {
+                    foreach ($fieldErrors as $fieldError) {
+                        $errors[] = $fieldError;
+                    }
+                }
+                if (empty($errors)) {
+                    $errors = ['Unknown file upload validation error!'];
+                }
+                return Json::encode(['errors' => $errors]);
             }
-            return '';
-
         }
         return $this->renderAjax('file');
     }
@@ -139,24 +134,12 @@ class UploadController extends Controller
      */
     public function actionFileDelete($fileName)
     {
-        $directory = Yii::getAlias(self::$uploadRoot) . self::$uploadFileDir. DIRECTORY_SEPARATOR . Yii::$app->session->id;
-        if (is_file($directory . DIRECTORY_SEPARATOR . $fileName)) {
-            unlink($directory . DIRECTORY_SEPARATOR . $fileName);
+        $model = new Upload();
+        $model->driver = $this->driver;
+        if($model->delete($fileName,'file')){
+            $output =[];
+            return Json::encode($output);
         }
-        $files = FileHelper::findFiles($directory);
-        $output = [];
-        foreach ($files as $file){
-            $path = self::$frontDomain . '/' . self::$uploadFileDir . Yii::$app->session->id . DIRECTORY_SEPARATOR . basename($file);
-            $output['files'][] = [
-                'name' => basename($file),
-                'size' => filesize($file),
-                "url" => $path,
-                "thumbnailUrl" => $path,
-                "deleteUrl" => 'file-delete?fileName=' . basename($file),
-                "deleteType" => "POST"
-            ];
-        }
-        return Json::encode($output);
     }
 
 }

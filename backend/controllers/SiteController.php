@@ -2,6 +2,7 @@
 namespace backend\controllers;
 
 use common\models\Posts;
+use curder\markdown\actions\UploadImageAction;
 use Yii;
 use yii\helpers\FileHelper;
 use yii\helpers\Json;
@@ -30,7 +31,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index','upload'],
+                        'actions' => ['logout', 'index','upload-image'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -51,6 +52,8 @@ class SiteController extends Controller
     public function actions()
     {
         return [
+            'upload-image'=>UploadImageAction::className(),
+//            'upload-file'
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],

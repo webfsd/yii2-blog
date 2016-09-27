@@ -2,35 +2,67 @@
 /**
  * Created by PhpStorm.
  * User: luo
- * Date: 16/9/26
- * Time: 13:24
+ * Date: 16/9/27
+ * Time: 10:19
  */
 
-namespace common\models;
+namespace curder\markdown\models;
 
+
+use Yii;
 use yii\base\Model;
+use yii\base\Exception;
+use yii\web\UploadedFile;
+use yii\helpers\FileHelper;
 
-class UploadForm extends Model
+class Image extends Model
 {
+
+    const  UPLOAD_IMG_DIR = 'markdown-image-uploads';
+    /**
+     * @var UploadedFile Uploaded image
+     */
     public $image;
 
+    /**
+     * @var string Web accessible path to the uploaded image
+     */
+    public $url;
+
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-            [['image'], 'file', 'skipOnEmpty' => yes, 'extensions' => 'png, jpg', 'maxFiles' => 4],
+            ['image', 'image', 'extensions' => ['png', 'jpg', 'gif'], 'maxWidth' => 1000, 'maxHeight' => 1000, 'maxSize' => 2 * 1024 * 1024,'on'=>'upload-image']
         ];
     }
 
-    public function upload()
+    /**
+     * Validates and saves the image.
+     * Creates the folder to store images if necessary.
+     * @return boolean
+     */
+    public function uploadImage()
     {
-        if ($this->validate()) {
-            foreach ($this->image as $file) {
-                $file->saveAs('uploads/' . $file->baseName . '.' . $file->extension);
+        $this->scenario = 'upload-image';
+        try {
+            if ($this->validate()) {
+                $save_path = FileHelper::normalizePath(Yii::getAlias('@frontend/web/' . self::UPLOAD_IMG_DIR));
+                FileHelper::createDirectory($save_path);
+                $this->url = Yii::getAlias('@web/' . self::UPLOAD_IMG_DIR . '/' . $this->image->baseName . '.' . $this->image->extension);
+                return $this->image->saveAs(FileHelper::normalizePath($save_path . '/' . $this->image->baseName . '.' . $this->image->extension));
             }
-            return true;
-        } else {
-            return false;
+        } catch (Exception $e) {
+            Yii::error($e->getMessage());
         }
+        return false;
     }
 
+    public function uploadFile()
+    {
+        
+    }
+    
 }

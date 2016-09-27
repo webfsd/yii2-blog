@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9f1686166489ae4a1f43b81d5ddcf477",
-    "content-hash": "9af32eb8e6effc0fdfa79c433a3bc0d0",
+    "hash": "9702db0bc71a7af291eae33a15f5f789",
+    "content-hash": "4e206a008dae1418e558126b4a59bfcc",
     "packages": [
         {
             "name": "2amigos/yii2-file-upload-widget",
-            "version": "1.0.5",
+            "version": "1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/2amigos/yii2-file-upload-widget.git",
-                "reference": "691d222dd01c642562bbe25cdb4182217e43a6f2"
+                "reference": "78f0f17e049db46dfb256bb8bf2d4fd2bbaec7e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/2amigos/yii2-file-upload-widget/691d222dd01c642562bbe25cdb4182217e43a6f2.zip",
-                "reference": "691d222dd01c642562bbe25cdb4182217e43a6f2",
+                "url": "https://packagist.phpcomposer.com/files/2amigos/yii2-file-upload-widget/78f0f17e049db46dfb256bb8bf2d4fd2bbaec7e1.zip",
+                "reference": "78f0f17e049db46dfb256bb8bf2d4fd2bbaec7e1",
                 "shasum": ""
             },
             "require": {
@@ -72,7 +72,7 @@
                 "yii 2",
                 "yii2"
             ],
-            "time": "2016-09-10 19:10:31"
+            "time": "2016-09-26 09:14:18"
         },
         {
             "name": "2amigos/yii2-gallery-widget",
@@ -240,6 +240,97 @@
                 "web"
             ],
             "time": "2016-08-04 23:22:06"
+        },
+        {
+            "name": "bizley/contenttools",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bizley/yii2-content-tools.git",
+                "reference": "47d141e39bf72d99dc62e9ac354afcdbc322b82d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/bizley/yii2-content-tools/47d141e39bf72d99dc62e9ac354afcdbc322b82d.zip",
+                "reference": "47d141e39bf72d99dc62e9ac354afcdbc322b82d",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/contenttools": "1.*",
+                "yiisoft/yii2": "2.*",
+                "yiisoft/yii2-imagine": "~2.0.0"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "bizley\\contenttools\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Pawel Bizley Brzozowski",
+                    "email": "pb@human-device.com"
+                }
+            ],
+            "description": "ContentTools editor implementation for Yii 2.",
+            "keywords": [
+                "contenttools",
+                "editor",
+                "extension",
+                "html",
+                "widget",
+                "wysiwyg",
+                "yii2"
+            ],
+            "time": "2016-03-28 13:42:03"
+        },
+        {
+            "name": "bower-asset/ContentTools",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GetmeUK/ContentTools.git",
+                "reference": "8e69ab23bbbc62d9f1cb2d6181377264d3b013e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GetmeUK/ContentTools/zipball/8e69ab23bbbc62d9f1cb2d6181377264d3b013e5",
+                "reference": "8e69ab23bbbc62d9f1cb2d6181377264d3b013e5",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "build/content-tools.js",
+                    "build/content-tools.min.css",
+                    "build/icons.woff",
+                    "build/images/drop-horz.svg",
+                    "build/images/drop-vert-above.svg",
+                    "build/images/drop-vert-below.svg",
+                    "build/images/video.svg"
+                ],
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "node_modules",
+                    "bower_components",
+                    "test",
+                    "tests"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A JS library for building WYSIWYG editors for HTML content",
+            "keywords": [
+                "editor",
+                "html",
+                "inline",
+                "wysiwyg"
+            ]
         },
         {
             "name": "bower-asset/blueimp-canvas-to-blob",
@@ -901,12 +992,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/curder/yii2-bootstrap-markdown.git",
-                "reference": "51a1674bc8be8a45c94112e2e10f1f388aca4d41"
+                "reference": "263ebd4423086dafe793d8772156f27aec63888c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/curder/yii2-bootstrap-markdown/51a1674bc8be8a45c94112e2e10f1f388aca4d41.zip",
-                "reference": "51a1674bc8be8a45c94112e2e10f1f388aca4d41",
+                "url": "https://packagist.phpcomposer.com/files/curder/yii2-bootstrap-markdown/263ebd4423086dafe793d8772156f27aec63888c.zip",
+                "reference": "263ebd4423086dafe793d8772156f27aec63888c",
                 "shasum": ""
             },
             "require": {
@@ -917,7 +1008,7 @@
             "type": "yii2-extension",
             "autoload": {
                 "psr-4": {
-                    "curder\\markdown\\": ""
+                    "curder\\markdown\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -938,7 +1029,7 @@
                 "markdown",
                 "yii2"
             ],
-            "time": "2016-09-24 14:45:05"
+            "time": "2016-09-27 01:48:07"
         },
         {
             "name": "dmstr/yii2-adminlte-asset",
@@ -1043,6 +1134,58 @@
                 "html"
             ],
             "time": "2016-07-16 12:58:58"
+        },
+        {
+            "name": "imagine/imagine",
+            "version": "v0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/avalanche123/Imagine.git",
+                "reference": "f64ec666baaa800edcbf237db41121a569230709"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/avalanche123/Imagine/f64ec666baaa800edcbf237db41121a569230709.zip",
+                "reference": "f64ec666baaa800edcbf237db41121a569230709",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "sami/sami": "dev-master"
+            },
+            "suggest": {
+                "ext-gd": "to use the GD implementation",
+                "ext-gmagick": "to use the Gmagick implementation",
+                "ext-imagick": "to use the Imagick implementation"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Imagine": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bulat Shakirzyanov",
+                    "email": "mallluhuct@gmail.com",
+                    "homepage": "http://avalanche123.com"
+                }
+            ],
+            "description": "Image processing for PHP 5.3",
+            "homepage": "http://imagine.readthedocs.org/",
+            "keywords": [
+                "drawing",
+                "graphics",
+                "image manipulation",
+                "image processing"
+            ],
+            "time": "2013-07-10 17:25:36"
         },
         {
             "name": "kartik-v/bootstrap-fileinput",
@@ -3078,6 +3221,54 @@
                 "yii2"
             ],
             "time": "2016-02-06 00:49:24"
+        },
+        {
+            "name": "yiisoft/yii2-imagine",
+            "version": "2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiisoft/yii2-imagine.git",
+                "reference": "68ed3d96cd1895035cef3c0e9ce9cf6c2c0c7f1c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/yiisoft/yii2-imagine/68ed3d96cd1895035cef3c0e9ce9cf6c2c0c7f1c.zip",
+                "reference": "68ed3d96cd1895035cef3c0e9ce9cf6c2c0c7f1c",
+                "shasum": ""
+            },
+            "require": {
+                "imagine/imagine": "0.5.*",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "yii\\imagine\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Antonio Ramirez",
+                    "email": "amigo.cobos@gmail.com"
+                }
+            ],
+            "description": "The Imagine integration for the Yii framework",
+            "keywords": [
+                "helper",
+                "image",
+                "imagine",
+                "yii2"
+            ],
+            "time": "2016-09-04 15:14:08"
         },
         {
             "name": "yiisoft/yii2-swiftmailer",
