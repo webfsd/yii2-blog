@@ -15,12 +15,14 @@ class m160927_090913_create_categories_table extends Migration
     {
         $this->createTable('categories', [
             'id' => Schema::TYPE_PK,
-            'tree' => Schema::TYPE_INTEGER,
-            'lft' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'rgt' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'depth' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'name' => Schema::TYPE_STRING . ' NOT NULL',
+            'name' =>  $this->string(20)->notNull()->comment('分类名'),
+            'slug' => $this->string(20)->notNull()->comment('缩略名'),
+            'parent' => $this->smallInteger()->notNull()->comment('上级分类'),
+            'order' => $this->smallInteger()->notNull()->defaultValue(100)->comment('排序'),
+            'description' => $this->string(120)->notNull()->defaultValue('')->comment('描述')
         ]);
+        $this->createIndex('categories_unique_key_name', 'categories', 'name',true);
+        $this->createIndex('categories_unique_key_slug', 'categories', 'slug',true);
     }
 
     /**

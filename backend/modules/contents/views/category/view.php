@@ -8,7 +8,7 @@ use mdm\admin\components\Helper;
 /* @var $model common\models\Category */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Categories'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="category-view">
@@ -17,13 +17,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?php if (Helper::checkRoute('update')) { 
-        echo Html::a('Update ', ['update','id' => $model->id], ['class' => 'btn btn-success']); }?>
+        echo Html::a(Yii::t('app', 'Update '), ['update','id' => $model->id], ['class' => 'btn btn-success']); }?>
 
         <?php if  (Helper::checkRoute('delete')) { 
-Html::a('Delete', ['delete', 'id' => $model->id], [
+Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
             ],
         ]); } ?>
@@ -33,11 +33,11 @@ Html::a('Delete', ['delete', 'id' => $model->id], [
         'model' => $model,
         'attributes' => [
             'id',
-            'tree',
-            'lft',
-            'rgt',
-            'depth',
             'name',
+            'slug',
+            'parent',
+            'order',
+            'description',
         ],
     ]) ?>
 

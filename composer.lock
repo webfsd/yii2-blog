@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c2ea3e56fe80140bd2eebcca97f42af0",
-    "content-hash": "0f4d0750a21467f50d6b627181599f51",
+    "hash": "a4989f71986a9fc85943e2a77f9af581",
+    "content-hash": "441865f7b449dfd0c0d4a08607f249bd",
     "packages": [
         {
             "name": "2amigos/yii2-file-upload-widget",
@@ -1995,16 +1995,16 @@
         },
         {
             "name": "kartik-v/yii2-widget-select2",
-            "version": "v2.0.8",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-widget-select2.git",
-                "reference": "4d03239c1e28ef8d3b96ab7fe360f5cbda34fb69"
+                "reference": "ed4467366f5ef50a7cfa957d5f07fa3c6d235a72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/kartik-v/yii2-widget-select2/4d03239c1e28ef8d3b96ab7fe360f5cbda34fb69.zip",
-                "reference": "4d03239c1e28ef8d3b96ab7fe360f5cbda34fb69",
+                "url": "https://packagist.phpcomposer.com/files/kartik-v/yii2-widget-select2/ed4467366f5ef50a7cfa957d5f07fa3c6d235a72.zip",
+                "reference": "ed4467366f5ef50a7cfa957d5f07fa3c6d235a72",
                 "shasum": ""
             },
             "require": {
@@ -2044,7 +2044,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-02-17 11:49:30"
+            "time": "2016-08-30 13:16:04"
         },
         {
             "name": "kartik-v/yii2-widget-sidenav",
@@ -3273,6 +3273,7 @@
     "stability-flags": {
         "kartik-v/yii2-mpdf": 20,
         "kartik-v/yii2-grid": 20,
+        "kartik-v/yii2-widget-select2": 20,
         "michelf/php-smartypants": 20,
         "curder/yii2-bootstrap-markdown": 20
     },

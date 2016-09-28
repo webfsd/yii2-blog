@@ -4,7 +4,8 @@ namespace backend\modules\contents\controllers;
 
 use Yii;
 use common\models\Category;
-use backend\modules\contents\CategorySearch;
+use backend\modules\contents\models\CategorySearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -33,7 +34,7 @@ class CategoryController extends Controller
      * Lists all Category models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($parent = 0)
     {
         $searchModel = new CategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -61,9 +62,10 @@ class CategoryController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($parent = 0)
     {
         $model = new Category();
+        if($parent) $model->parent = $parent;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);

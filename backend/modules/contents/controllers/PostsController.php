@@ -2,13 +2,12 @@
 
 namespace backend\modules\contents\controllers;
 
-use kartik\markdown\Markdown;
+use common\models\Category;
+use common\models\CategoryQuery;
 use Yii;
 use common\models\Posts;
 use backend\modules\contents\models\PostsSearch;
 use yii\helpers\ArrayHelper;
-use yii\helpers\HtmlPurifier;
-use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

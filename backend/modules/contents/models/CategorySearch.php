@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\modules\contents;
+namespace backend\modules\contents\models;
 
 use Yii;
 use yii\base\Model;
@@ -18,8 +18,8 @@ class CategorySearch extends Category
     public function rules()
     {
         return [
-            [['id', 'tree', 'lft', 'rgt', 'depth'], 'integer'],
-            [['name'], 'safe'],
+            [['id', 'parent', 'order'], 'integer'],
+            [['name', 'slug', 'description', 'parent'], 'safe'],
         ];
     }
 
@@ -57,17 +57,26 @@ class CategorySearch extends Category
             return $dataProvider;
         }
 
+        if (isset($params['parent'])) {
+            $query->andWhere(['parent' => $params['parent']]);
+        } else {
+            $query->andWhere(['parent' => 0]);
+        }
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'tree' => $this->tree,
-            'lft' => $this->lft,
-            'rgt' => $this->rgt,
-            'depth' => $this->depth,
+            // 'parent' => $this->parent,
+            'order' => $this->order,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'slug', $this->slug])
+            ->andFilterWhere(['like', 'description', $this->description]);
 
+        $query->orderBy('order');
+//        $commandQuery = clone $query;
+//        echo $commandQuery->createCommand()->getRawSql();
         return $dataProvider;
     }
 }
