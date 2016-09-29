@@ -11,12 +11,7 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [
-        'admin' => [
-            'class' => 'mdm\admin\Module',
-            // 'layout' => 'left-menu', // yii2-admin的导航菜单
-        ]
-    ],
+    'modules' => require (__DIR__ . '/modules.php'),
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -49,7 +44,7 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'suffix' => '.html',
+            // 'suffix' => '.html',
             'rules' => [
                 "<controller:\w+>/<id:\d+>" => "<controller>/view",
                 "<controller:\w+>/<action:\w+>" => "<controller>/<action>"
@@ -58,7 +53,7 @@ return [
         'assetManager' => [
             'bundles' => [
                 'dmstr\web\AdminLteAsset' => [
-                    'skin' => 'skin-black',
+                    'skin' => 'skin-green',
                 ],
             ],
         ],

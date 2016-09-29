@@ -1,11 +1,16 @@
 <?php
 namespace backend\controllers;
 
+use common\models\Posts;
+use curder\markdown\UploadImage;
 use Yii;
+use yii\helpers\FileHelper;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use yii\web\UploadedFile;
 
 /**
  * Site controller
@@ -26,7 +31,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index', 'upload-image', 'upload-file', 'delete-image', 'delete-file'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -47,6 +52,7 @@ class SiteController extends Controller
     public function actions()
     {
         return [
+            'upload-image' => UploadImage::className() ,
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
@@ -95,4 +101,59 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
+
+    public function actionUpload()
+    {
+        $model = new Posts;
+        $imageDomain = Yii::$app->params['image.domain'];
+        $imageFile = UploadedFile::getInstance($model, "imageFile");
+        // var_dump($imageFile);exit;
+        $directory = \Yii::getAlias('@upload') . DIRECTORY_SEPARATOR . Yii::$app->session->id . DIRECTORY_SEPARATOR;
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
+        if ($imageFile) {
+            $uid = uniqid(time(), true);
+            $fileName = $uid . '.' . $imageFile->extension;
+            $filePath = $directory . $fileName;
+            if ($imageFile->saveAs($filePath)) {
+                $path = $imageDomain . '/uploads/images/temp/' . Yii::$app->session->id . DIRECTORY_SEPARATOR . $fileName;
+                return Json::encode([
+                    'files' => [[
+                        'name' => $fileName,
+                        'size' => $imageFile->size,
+                        "url" => $path,
+                        "thumbnailUrl" => $path,
+                        "deleteUrl" => '/site/image-delete?name=' . $fileName,
+                        "deleteType" => "POST"
+                    ]]
+                ]);
+            }
+        }
+        return '';
+    }
+
+    public function actionImageDelete($name)
+    {
+        $directory = \Yii::getAlias('@upload') . DIRECTORY_SEPARATOR . Yii::$app->session->id;
+        if (is_file($directory . DIRECTORY_SEPARATOR . $name)) {
+            unlink($directory . DIRECTORY_SEPARATOR . $name);
+        }
+        $files = FileHelper::findFiles($directory);
+        $output = [];
+        foreach ($files as $file) {
+            $imageDomain = Yii::$app->params['image.domain'];
+            $path = $imageDomain . '/uploads/images/temp/' . Yii::$app->session->id . DIRECTORY_SEPARATOR . basename($file);
+            $output['files'][] = [
+                'name' => basename($file),
+                'size' => filesize($file),
+                "url" => $path,
+                "thumbnailUrl" => $path,
+                "deleteUrl" => '/site/image-delete?name=' . basename($file),
+                "deleteType" => "POST"
+            ];
+        }
+        return Json::encode($output);
+    }
+
 }
