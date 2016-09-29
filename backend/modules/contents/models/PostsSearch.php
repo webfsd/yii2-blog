@@ -20,7 +20,7 @@ class PostsSearch extends Posts
     {
         return [
             [['id', 'views', 'comment_count', 'sort', 'enabled_comment', 'status'], 'integer'],
-            [['slug', 'author_id','tagNames', 'title', 'description', 'content', 'password', 'created_at', 'updated_at'], 'safe'],
+            [['slug', 'author_id', 'title', 'description', 'content', 'password', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -59,7 +59,6 @@ class PostsSearch extends Posts
         }
 
         $query->joinWith('author'); // 关联查询
-        $query->joinWith('tags'); // 关联查询
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -79,7 +78,6 @@ class PostsSearch extends Posts
             ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'content', $this->content])
             ->andFilterWhere(['like', 'password', $this->password])
-             ->andFilterWhere(['like', 'tags.name', $this->tagNames])
             ->andFilterWhere(['like', 'user.username', $this->author_id]);
 
         return $dataProvider;

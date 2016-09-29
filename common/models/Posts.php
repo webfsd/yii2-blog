@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use creocoder\taggable\TaggableBehavior;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%posts}}".
@@ -22,6 +23,8 @@ use creocoder\taggable\TaggableBehavior;
  * @property integer $status
  * @property string $created_at
  * @property string $updated_at
+ * @property mixed tags
+ * @property mixed categories
  */
 class Posts extends \yii\db\ActiveRecord
 {
@@ -29,8 +32,26 @@ class Posts extends \yii\db\ActiveRecord
     const STATUS_PUBLISH = 2; // 公开
     const STATUS_HIDDEN = 1; // 隐藏
 
-    public $tagNames;
     public $image; // 编辑器上传图片
+
+    /**
+     * 关联文章的id
+     * @var array
+     */
+    public $category;
+
+    /**
+     * 保存前的旧分类
+     * @var array
+     */
+    private $_oldCategory;
+
+    /**
+     * 保存前的标签
+     * @var array
+     */
+    private $_oldTags;
+
     /**
      * @inheritdoc
      */
@@ -46,9 +67,9 @@ class Posts extends \yii\db\ActiveRecord
     {
         return [
             [['author_id', 'views', 'comment_count', 'sort', 'enabled_comment', 'status'], 'integer'],
-            [['enabled_comment', 'status', 'slug'], 'required'],
+            [['enabled_comment', 'status', 'slug', 'category'], 'required'],
             [['content'], 'string'],
-            [['created_at', 'updated_at', 'tagValues', 'views','imageFile'], 'safe'],
+            [['created_at', 'updated_at', 'views', 'tags'], 'safe'],
             [['slug'], 'string', 'max' => 20],
             [['title'], 'string', 'max' => 60],
             [['title'], 'required'],
@@ -76,12 +97,16 @@ class Posts extends \yii\db\ActiveRecord
             'content' => Yii::t('app', '文章内容'),
             'password' => Yii::t('app', '密码'),
             'status' => Yii::t('app', '状态'),
-            'tagNames' => Yii::t('app', '文章标签'),
+            'category' => Yii::t('app', '分类'),
+            'tags' => Yii::t('app', '标签'),
             'created_at' => Yii::t('app', '发布时间'),
             'updated_at' => Yii::t('app', '更新时间'),
         ];
     }
 
+    /**
+     * @return array
+     */
     public function attributeHints()
     {
         return [
@@ -89,47 +114,76 @@ class Posts extends \yii\db\ActiveRecord
             'slug' => '输入一个唯一标识',
             'description' => "请输入文章的描述,默认截取前150个字符",
             'content' => '请填写文章内容',
-            'tagNames' => '请输入标签名,按Tab键确认',
             'status' => '请选择文章状态',
             'enabled_comment' => '是否开启评论',
             'views' => '文章浏览数',
+            'category' => '请选择分类',
+            'tags' => '请选择文章标签',
+            'created_at' => '请选择创建时间',
             'password' => '如果文章需要加密,请输入文章密码'
         ];
     }
 
     /**
-     * @inheritdoc
+     * 查询后的一些操作
      */
-    public function behaviors()
+    public function afterFind()
     {
-        return [
-            'taggable' => [
-                'class' => TaggableBehavior::className(),
-                'tagValuesAsArray' => false,
-                'tagRelation' => 'tags',
-                'tagValueAttribute' => 'name',
-                'tagFrequencyAttribute' => 'frequency',
-            ],
-        ];
+        parent::afterFind();
+        $this->category = $this->categories;
+        $this->_oldTags = $this->tags; // 获取当前文章tags列表
+
+        $this->_oldCategory = array_keys(ArrayHelper::index(ArrayHelper::toArray($this->categories), function ($element) {
+            return $element['id'];
+        })); // 获取分类id
+
     }
 
     /**
-     * @inheritdoc
+     * @param bool $insert
+     * @return bool
      */
-    public function transactions()
+    public function beforeSave($insert)
     {
-        return [
-            self::SCENARIO_DEFAULT => self::OP_ALL,
-        ];
+        parent::beforeSave($insert);
+
+        if (parent::beforeSave($insert)) {
+            if ($insert) { // 新增操作
+                $this->author_id = Yii::$app->user->id; // 赋值当前用户id
+            }
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @param bool $insert
+     * @param array $changedAttributes
      */
-    public function getTags()
+    public function afterSave($insert, $changedAttributes)
     {
-        return $this->hasMany(Tags::className(), ['id' => 'tag_id'])->viaTable('post_tag', ['post_id' => 'id']);
+        parent::afterSave($insert, $changedAttributes);
+        if ($insert) { // 新增操作
+            Category::addCategory($this->category, $this->primaryKey); // 新增关联分类
+        } else { // 编辑操作
+            Category::updateCategory($this->_oldCategory, $this->category, $this->primaryKey); // 编辑关联分类
+        }
+
+        Tags::updateFrequency($this->_oldTags, $this->tags); // 编辑标签
     }
+
+    /**
+     * 删除之后
+     */
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        Tags::updateFrequency($this->tags, '');
+        Category::removeCategory($this->_oldCategory, $this->primaryKey);
+    }
+
 
     /**
      * @return \yii\db\ActiveQuery
@@ -138,4 +192,14 @@ class Posts extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'author_id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategories()
+    {
+        return $this->hasMany(Category::className(), ['id' => 'category_id'])->viaTable('post_category', ['post_id' => 'id']);
+    }
+
+
 }

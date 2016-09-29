@@ -29,7 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             [
                 'attribute' => 'name',
                 'content' => function ($model, $key, $index, $column) {
@@ -43,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 }
             ],
-            'id',
+//            'id',
 //            'name',
             'slug',
 //            'parent',
@@ -58,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             'order',
-            // 'description',
+            'count',
 
             [
                 'class' => 'yii\grid\ActionColumn',

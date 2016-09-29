@@ -2,8 +2,8 @@
 
 namespace common\models;
 
-use mdm\admin\components\Helper;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%categories}}".
@@ -15,8 +15,11 @@ use Yii;
  * @property integer $order
  * @property string $description
  */
-class Category extends \yii\db\ActiveRecord
+class Category extends ActiveRecord
 {
+    /**
+     * @var array
+     */
     public static $category_list;
 
     /**
@@ -33,8 +36,9 @@ class Category extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'slug','parent'], 'required'],
+            [['name', 'slug', 'parent'], 'required'],
             [['parent', 'order'], 'integer'],
+            ['count', 'safe'],
             ['name', 'string', 'max' => 255],
             ['name', 'unique', 'targetClass' => Category::className(), 'message' => '分类名已存在.'],
             ['slug', 'string', 'max' => 20],
@@ -54,6 +58,7 @@ class Category extends \yii\db\ActiveRecord
             'slug' => Yii::t('app', '缩略名'),
             'parent' => Yii::t('app', '上级分类'),
             'order' => Yii::t('app', '排序'),
+            'count' => Yii::t('app', '分类下文章数'),
             'description' => Yii::t('app', '描述'),
         ];
     }
@@ -62,7 +67,7 @@ class Category extends \yii\db\ActiveRecord
      * 获取所有分类树
      * @return mixed
      */
-    public function getCategories()
+    public static function getCategories()
     {
         $categories = self::find()->select('name,parent,id')->indexBy('id')->all();
 
@@ -86,12 +91,12 @@ class Category extends \yii\db\ActiveRecord
     {
         $categories = self::find()->all();
 
-        $ids = array_merge(self::getChildrensIds($categories, $id), [(int)$id]);
-        $resault = [];
-        foreach ($ids as $id) {
-            $resault[$id] = ['disabled' => true];
+        $ids = array_merge(self::getChildrensIds($categories, $id), [$id]);
+        $res = [];
+        foreach ($ids as $i) {
+            $res[$i] = ['disabled' => true];
         }
-        return $resault;
+        return $res;
     }
 
     /**
@@ -103,7 +108,7 @@ class Category extends \yii\db\ActiveRecord
     {
         $categories = self::find()->all();
 
-        return count( self::getChildrensIds($categories, $id));
+        return count(self::getChildrensIds($categories, $id));
     }
 
     /**
@@ -111,15 +116,15 @@ class Category extends \yii\db\ActiveRecord
      */
     public static function getCategoryNameByParentId($id)
     {
-        return self::find()->select('name')->where(['parent'=>$id])->one();
+        return self::find()->select('name')->where(['parent' => $id])->one();
     }
-    
+
     /**
      * @param $array array
      * @param $parent integer
      * @param int $laravel
      */
-    protected function dropDownTree($array, $parent, $laravel = 0)
+    protected static function dropDownTree($array, $parent, $laravel = 0)
     {
         foreach ($array as $item) {
             if ($item->id != $item->parent && $item->parent == $parent) {
@@ -145,5 +150,64 @@ class Category extends \yii\db\ActiveRecord
             }
         }
         return $arr;
+    }
+
+    /**
+     * @param $oldCategory array
+     * @param $newCategory array
+     * @param $pk integer
+     */
+    public static function updateCategory($oldCategory, $newCategory, $pk)
+    {
+        if (empty($oldCategory) || empty($newCategory)) return;
+
+        if ($categories = array_values(array_diff($oldCategory, $newCategory))) { // 编辑时删除分类
+            self::removeCategory($categories, $pk);
+        }
+
+        if ($categories = array_values(array_diff($newCategory, $oldCategory))) { // 编辑时新增分类
+            self::addCategory($categories, $pk);
+        }
+    }
+
+    /**
+     * @param $categories array
+     * @param $pk integer
+     */
+    public static function addCategory($categories, $pk)
+    {
+        if (empty($categories)) return;
+        $rows = [];
+        foreach ($categories as $category) {
+
+            $oCategory = Category::find()->where(['id' => $category])->one();
+            $oCategory->count += 1;
+            $oCategory->save();
+
+            $rows[] = [$pk, $category];
+        }
+        self::getDb()
+            ->createCommand()
+            ->batchInsert('post_category', ['post_id', 'category_id'], $rows)
+            ->execute();
+    }
+
+    /**
+     * @param $categories array
+     * @param $pk integer
+     */
+    public static function removeCategory($categories, $pk)
+    {
+        if (empty($categories)) return;
+
+        foreach ($categories as $category) {
+            $oCategory = Category::find()->where(['id' => $category])->one();
+            $oCategory->count -= 1;
+            $oCategory->save();
+
+            self::getDb()
+                ->createCommand()
+                ->delete('post_category', ['category_id' => $category, 'post_id' => $pk])->execute();
+        }
     }
 }

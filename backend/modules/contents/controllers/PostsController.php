@@ -67,12 +67,7 @@ class PostsController extends Controller
     public function actionCreate()
     {
         $model = new Posts();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-
-            $posts = Yii::$app->request->post();
-            $model->addTagValues($posts['Posts']['tagNames']);
-            $model->author_id = Yii::$app->user->id; // 当前用户id
-            $model->save();
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -91,15 +86,9 @@ class PostsController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post())) {
-            $posts = Yii::$app->request->post();
-            $model->tagValues = $posts['Posts']['tagNames']; // 赋值标签
-            $model->save();
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            $tags = $model->tags;
-            $model['tagNames'] = join(',',ArrayHelper::map(ArrayHelper::toArray($tags),'id','name'));
-
             return $this->render('update', [
                 'model' => $model,
             ]);

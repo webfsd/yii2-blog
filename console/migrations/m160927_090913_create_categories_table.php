@@ -19,6 +19,7 @@ class m160927_090913_create_categories_table extends Migration
             'slug' => $this->string(20)->notNull()->comment('缩略名'),
             'parent' => $this->smallInteger()->notNull()->comment('上级分类'),
             'order' => $this->smallInteger()->notNull()->defaultValue(100)->comment('排序'),
+            'count'=>$this->smallInteger()->unsigned()->notNull()->comment('文章数'),
             'description' => $this->string(120)->notNull()->defaultValue('')->comment('描述')
         ]);
         $this->createIndex('categories_unique_key_name', 'categories', 'name',true);

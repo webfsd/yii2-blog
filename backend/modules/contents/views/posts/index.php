@@ -1,8 +1,8 @@
 <?php
 
+use common\widgets\Label;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-// use yii\grid\GridView;
 use kartik\grid\GridView;
 use mdm\admin\components\Helper;
 
@@ -35,6 +35,22 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             'id',
             [
+                'attribute' => 'category',
+                'format' => 'html',
+                'value' => function ($model) {
+                    $categories = ArrayHelper::map($model->category, 'id', 'name');
+                    $label = [];
+                    foreach ( $categories as $key => $category) {
+                        $label[] = Label::widget([
+                            'name' => $category,
+                            'frequency' => $key
+                        ]);
+                    }
+                    $categoryStr = join(' ',$label);
+                    return $categoryStr;
+                }
+            ],
+            [
                 'attribute' => 'title',
                 'format' => 'html',
                 'value' => function ($model, $index, $dataColumn) {
@@ -49,15 +65,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'created_at',
             'views',
             [ // 文章标签
-                'attribute' => 'tagNames',
+                'attribute' => 'tags',
                 'format' => 'html',
                 'value' => function ($model) {
                     $tags = $model->tags;
                     $label = [];
-                    foreach ($tags as $tag) {
-                        $label[] = \common\widgets\Label::widget([
-                            'name' => $tag['name'],
-                            'frequency' => $tag['frequency']
+                    if (!$tags) return '';
+                    foreach (explode(',', $tags) as $key => $tag) {
+                        $label[] = Label::widget([
+                            'name' => $tag,
+                            'frequency' => $key
                         ]);
                     }
 
